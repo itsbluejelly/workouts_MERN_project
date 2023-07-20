@@ -7,5 +7,14 @@ function getController(req, res, next){
     next()
 }
 
+//DEFINING A POSTCONTROLLER FUNCTION THAT HANDLES POST REQUESTS
+function postController(req, res, next){
+    res.send("Hello")
+    next()
+}
+
 // EXPORTING VARIOUS CONTROLLERS
-module.exports = { getController }
+module.exports = { 
+    getController,
+    postController
+}

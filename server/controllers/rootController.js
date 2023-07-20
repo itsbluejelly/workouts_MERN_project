@@ -2,10 +2,10 @@
 const eventLogger = require('../middleware/eventLogger')
 
 // DEFINING A GETCONTROLLER FUNCTION THAT HANDLES GET REQUESTS
-function getController(req, res, next){
+function allController(req, res, next){
     eventLogger(req.path, req.method, "eventLogs.txt")
     next()
 }
 
 // EXPORTING VARIOUS CONTROLLERS
-module.exports = { getController }
+module.exports = allController
