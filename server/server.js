@@ -5,10 +5,12 @@ const cors = require('cors')
 const eventLogger = require('./middleware/eventLogger')
 const rootRouter = require('./routers/rootRouter')
 const workoutsRouter = require('./routers/workoutsRouter')
+const connectDB = require('./config/connectDB')
 
 // INITIATING EXPRESS APP WITH OTHER LIBRARIES
 const app = express()
 dotenv.config()
+connectDB()
 
 // NON-ROUTE MIDDLEWARES
 app.use(cors())
