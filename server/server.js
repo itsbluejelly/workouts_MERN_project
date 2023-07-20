@@ -15,3 +15,8 @@ app.use(express.json())
 
 // ROUTE MIDDLEWARES
 app.use("/", rootRouter)
+
+// INITIALIZING SERVER
+const port = process.env.PORT_NUMBER
+
+app.listen(port, () => eventLogger("Server activated successfully", `Server listening on port ${port}`, "eventLogs.txt"))

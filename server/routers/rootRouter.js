@@ -6,7 +6,7 @@ const rootController = require('../controllers/rootController')
 const rootRouter = express.Router()
 
 // ROUTE MIDDLEWARES
-rootRouter.get("/", rootController.getController)
+rootRouter.get("/*", rootController.getController)
 
 // EXPORTING ROOTROUTER
 module.exports = rootRouter
