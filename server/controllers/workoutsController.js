@@ -15,25 +15,36 @@ async function getController(req, res, next){
     }catch(error){
         res.status(404).json({ Error: { [error.name]: error.message } })
         eventLogger(error.name, error.message, "errorLogs.txt")
-    } 
+    }
+    
+    next()
 }
 
 //DEFINING A POSTCONTROLLER FUNCTION THAT HANDLES POST REQUESTS
 async function postController(req, res, next){
     try{
-        const {title, reps, load} = req.body
-        const createdWorkout = await WorkoutModel.create({title, reps, load})
+        const createdWorkout = await WorkoutModel.create(req.body.post)
         res.status(201).send("Workout created successfully")
-        eventLogger("A new workout successfully added to database", `Workout id is ${createdWorkout._id}`, "databaseLogs.tzt")
+        eventLogger("A new workout successfully added to database", createdWorkout, "databaseLogs.txt")
     }catch(error){
         res.status(400).json({ Error: { [error.name]: error.message } })
         eventLogger(error.name, error.message, "errorLogs.txt")
     }
+
+    next()
 }
 
 //DEFINING A DELETECONTROLLER FUNCTION THAT HANDLES DELETE REQUESTS
-function deleteController(req, res, next){
-    res.send("Hello")
+async function deleteController(req, res, next){
+    try{
+        const deletedWorkouts = await WorkoutModel.deleteMany(req.body.actions ? req.body.actions.find : null)
+        res.status(200).send(`${deletedWorkouts.deletedCount} deleted successfully`)
+        eventLogger("Deletion of workouts from collection successfull", `${deletedWorkouts.deletedCount} workouts deleted`, "databaseLogs.txt")
+    }catch(error){
+        res.status(404).json({ Error: { [error.name]: error.message } })
+        eventLogger(error.name, error.message, "errorLogs.txt")
+    }
+
     next()
 }
 
