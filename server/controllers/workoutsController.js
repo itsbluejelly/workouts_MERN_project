@@ -13,8 +13,22 @@ function postController(req, res, next){
     next()
 }
 
+//DEFINING A DELETECONTROLLER FUNCTION THAT HANDLES DELETE REQUESTS
+function deleteController(req, res, next){
+    res.send("Hello")
+    next()
+}
+
+//DEFINING A POSTCONTROLLER FUNCTION THAT HANDLES POST REQUESTS
+function postController(req, res, next){
+    res.send("Hello")
+    next()
+}
+
 // EXPORTING VARIOUS CONTROLLERS
 module.exports = { 
     getController,
-    postController
+    postController,
+    deleteController,
+    patchController
 }

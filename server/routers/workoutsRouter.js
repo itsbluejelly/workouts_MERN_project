@@ -8,6 +8,7 @@ const workoutsRouter = express.Router()
 // ROUTE MIDDLEWARES
 workoutsRouter.get("/", workoutsController.getController)
 workoutsRouter.post("/", workoutsController.postController)
+workoutsRouter.delete("/", workoutsController.deleteController)
 
 // EXPORTING WORKOUTSROUTER
 module.exports = workoutsRouter
