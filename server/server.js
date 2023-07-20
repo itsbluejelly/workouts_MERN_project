@@ -2,6 +2,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const cors = require('cors')
+const mongoose = require('mongoose')
 const eventLogger = require('./middleware/eventLogger')
 const rootRouter = require('./routers/rootRouter')
 const workoutsRouter = require('./routers/workoutsRouter')
@@ -23,4 +24,6 @@ app.use("/workouts", workoutsRouter)
 // INITIALIZING SERVER
 const port = process.env.PORT_NUMBER || 4000
 
-app.listen(port, () => eventLogger("Server activated successfully", `Server listening on port ${port}`, "eventLogs.txt"))
+mongoose.connection.once("open", () => (
+    app.listen(port, () => eventLogger("Connected to MongoDB successfully", `Server listening on port ${port}`, "databaseLogs.txt"))
+))
