@@ -1,5 +1,5 @@
 // IMPORTING NECESSARY MIDDLEWARE
-const eventLogger = require('../middleware/eventLogger')
+const eventLogger = require('../../middleware/eventLogger')
 
 //DEFINING A GETCONTROLLER FUNCTION THAT HANDLES GET REQUESTS
 function getController(req, res, next){
