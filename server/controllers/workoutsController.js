@@ -1,9 +1,9 @@
-// IMPORTING NECESSARY LIBRARIES AND MIDDLEWARES
+// IMPORTING NECESSARY MIDDLEWARE
 const eventLogger = require('../middleware/eventLogger')
 
-// DEFINING A GETCONTROLLER FUNCTION THAT HANDLES GET REQUESTS
+//DEFINING A GETCONTROLLER FUNCTION THAT HANDLES GET REQUESTS
 function getController(req, res, next){
-    eventLogger(req.path, req.method, "eventLogs.txt")
+    res.send("Hello")
     next()
 }
 
