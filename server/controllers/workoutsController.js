@@ -38,7 +38,7 @@ async function postController(req, res, next){
 async function deleteController(req, res, next){
     try{
         const deletedWorkouts = await WorkoutModel.deleteMany(req.body.actions ? req.body.actions.find : null)
-        res.status(200).send(`${deletedWorkouts.deletedCount} deleted successfully`)
+        res.status(200).send(`${deletedWorkouts.deletedCount} workouts deleted successfully`)
         eventLogger("Deletion of workouts from collection successfull", `${deletedWorkouts.deletedCount} workouts deleted`, "databaseLogs.txt")
     }catch(error){
         res.status(404).json({ Error: { [error.name]: error.message } })
@@ -49,8 +49,19 @@ async function deleteController(req, res, next){
 }
 
 //DEFINING A PUTCONTROLLER FUNCTION THAT HANDLES PUT REQUESTS
-function putController(req, res, next){
-    res.send("Hello")
+async function putController(req, res, next){
+    try{
+        const updatedWorkouts = await WorkoutModel.updateMany(
+            req.body.actions ? req.body.actions.find : null,
+            req.body.actions ? req.body.actions.update : null
+        )
+        res.status(200).send(`${updatedWorkouts.modifiedCount} workouts updated successfully`)
+        eventLogger("Updating of workouts from collection successfull", `${updatedWorkouts.modifiedCount} workouts updated`, "databaseLogs.txt")
+    }catch(error){
+        res.status(404).json({ Error: { [error.name]: error.message } })
+        eventLogger(error.name, error.message, "errorLogs.txt")
+    }
+
     next()
 }
 
