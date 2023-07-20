@@ -2,7 +2,7 @@
 const mongoose = require('mongoose')
 
 // INITIATING A SCHEMA CLASS
-const Schema = mongoose.Schema()
+const Schema = mongoose.Schema
 
 // CREATING A WORKOUT SCHEMA
 const WorkoutSchema = new Schema({
