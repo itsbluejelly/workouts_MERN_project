@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 const eventLogger = require('./middleware/eventLogger')
 const rootRouter = require('./routers/rootRouter')
+const workoutsRouter = require('./routers/workoutsRouter')
 
 // INITIATING EXPRESS APP WITH OTHER LIBRARIES
 const app = express()
@@ -15,8 +16,9 @@ app.use(express.json())
 
 // ROUTE MIDDLEWARES
 app.use("/", rootRouter)
+app.use("/workouts", workoutsRouter)
 
 // INITIALIZING SERVER
-const port = process.env.PORT_NUMBER
+const port = process.env.PORT_NUMBER || 4000
 
 app.listen(port, () => eventLogger("Server activated successfully", `Server listening on port ${port}`, "eventLogs.txt"))
