@@ -9,6 +9,7 @@ const workoutsRouter = express.Router()
 workoutsRouter.get("/", workoutsController.getController)
 workoutsRouter.post("/", workoutsController.postController)
 workoutsRouter.delete("/", workoutsController.deleteController)
+workoutsRouter.patch("/", workoutsController.patchController)
 
 // EXPORTING WORKOUTSROUTER
 module.exports = workoutsRouter

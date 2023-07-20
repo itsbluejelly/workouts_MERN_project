@@ -19,8 +19,8 @@ function deleteController(req, res, next){
     next()
 }
 
-//DEFINING A POSTCONTROLLER FUNCTION THAT HANDLES POST REQUESTS
-function postController(req, res, next){
+//DEFINING A PATCHCONTROLLER FUNCTION THAT HANDLES PATCH REQUESTS
+function patchController(req, res, next){
     res.send("Hello")
     next()
 }
