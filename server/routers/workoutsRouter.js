@@ -11,7 +11,7 @@ workoutsRouter.route("/")
     .get(workoutsController.getController)
     .post(workoutsController.postController)
     .delete(workoutsController.deleteController)
-    .patch(workoutsController.patchController)
+    .put(workoutsController.putController)
 
     // SUB-ROUTE MIDDLEWARE
 workoutsRouter.use("/workout", workoutSubRouter)
