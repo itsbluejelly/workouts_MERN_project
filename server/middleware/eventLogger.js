@@ -16,20 +16,20 @@ async function eventLogger(message1, message2, fileName){
         }
 
         if(!fs.existsSync(path.join(__dirname, '..', 'logs'))){
-            fsPromises.mkdir(path.join(__dirname, '..', 'logs'))
+            await fsPromises.mkdir(path.join(__dirname, '..', 'logs'))
         }
 
-        fsPromises.appendFile(path.join(__dirname, '..', 'logs', fileName), loggedItem, "utf-8")
+        await fsPromises.appendFile(path.join(__dirname, '..', 'logs', fileName), loggedItem, "utf-8")
         console.log(loggedItem)
     }catch(error){
         const errorItem = `${dateTime}\t${uuid()}\t${error.name}\t${error.message}\n`
 
         try{
             if(!fs.existsSync(path.join(__dirname, '..', 'logs'))){
-                fsPromises.mkdir(path.join(__dirname, '..', 'logs'))
+                await fsPromises.mkdir(path.join(__dirname, '..', 'logs'))
             }
             
-            fsPromises.appendFile(path.join(__dirname, '..', 'logs', 'errorLogs.txt'), errorItem, "utf-8")
+            await fsPromises.appendFile(path.join(__dirname, '..', 'logs', 'errorLogs.txt'), errorItem, "utf-8")
             console.log(errorItem)
         }catch(secondError){
             console.log(`${dateTime}\t${uuid()}\t${secondError.name}\t${secondError.message}\n`)
