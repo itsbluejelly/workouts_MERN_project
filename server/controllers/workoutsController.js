@@ -1,5 +1,4 @@
 // IMPORTING NECESSARY MIDDLEWARE
-const { urlencoded } = require('express')
 const eventLogger = require('../middleware/eventLogger')
 const WorkoutModel = require('../models/Workout')
 
@@ -9,47 +8,54 @@ async function getController(req, res, next){
     const filterObject = {}
     const sortObject = {}
     let selectedFields = ''
-    let limit = null
+    let limitNumber = null
     
     try{
         if(queryParameters.title){
-            const sanitizedTitle = queryParameters.title.replace(/[^a-zA-Z-]+/g, '')
-            
-            if(!sanitizedTitle){
-                throw new Error("Wrong query title parameter")
-            }else{
-                filterObject.title = sanitizedTitle
+            const regex = /^[A-Za-z- ]+$/g
+            const queryTitle = queryParameters.title
+
+            if(!regex.test(queryTitle)){
+                throw new Error("Invalid query title parameter value")
             }
+            
+            filterObject.title = queryTitle.toLowerCase()
         }
         
         if(queryParameters.reps){
-            const sanitizedReps = parseFloat(queryParameters.reps.replace(/\D+/g, ''))
-            
-            if(!sanitizedReps){
-                throw new Error("Wrong query reps parameter")
-            }else{
-                filterObject.reps = sanitizedReps
+            const regex = /^[0-9.]+$/g
+            const queryReps = queryParameters.reps
+
+            if(!regex.test(queryReps)){
+                throw new Error("Invalid query reps parameter value")
             }
+
+            const sanitizedQueryReps = parseFloat(queryReps)
+            filterObject.reps = sanitizedQueryReps
         }
 
         if(queryParameters.load){
-            const sanitizedLoad = parseFloat(queryParameters.load.replace(/\D+/g, ''))
-            
-            if(!sanitizedLoad){
-                throw new Error("Wrong query load parameter")
-            }else{
-                filterObject.load = sanitizedLoad
+            const regex = /^[0-9.]+$/g
+            const queryLoad = queryParameters.load
+
+            if(!regex.test(queryLoad)){
+                throw new Error("Invalid query load parameter value")
             }
+
+            const sanitizedQueryLoad = parseFloat(queryLoad)
+            filterObject.load = sanitizedQueryLoad
         }
         
         if(queryParameters.limit){
-            const sanitizedLimit = parseInt(queryParameters.limit.replace(/\D+/g, ''))
-            
-            if(!sanitizedLimit){
-                throw new Error("Wrong query limit parameter")
-            }else{
-                limit = sanitizedLimit
+            const regex = /^[0-9]+$/g
+            const queryLimit = queryParameters.limit
+
+            if(!regex.test(queryLimit)){
+                throw new Error("Invalid query limit parameter")
             }
+
+            const sanitizedQueryLimit = parseInt(queryLimit)
+            limitNumber = sanitizedQueryLimit
         }
 
         if(queryParameters.sortByLatest){
@@ -72,7 +78,7 @@ async function getController(req, res, next){
             if(queryParameters.sortByTitle !== 'desc' && queryParameters.sortByTitle !== 'asce'){
                 throw new Error("Wrong query sortByTitle parameter")
             }else{
-                sortObject.title = queryParameters.sortByTitle === 'desc' ? 1 : -1
+                sortObject.title = queryParameters.sortByTitle === 'desc' ? -1 : 1
             }
         }
 
@@ -80,7 +86,7 @@ async function getController(req, res, next){
             if(queryParameters.sortByReps !== 'desc' && queryParameters.sortByReps !== 'asce'){
                 throw new Error("Wrong query sortByReps parameter")
             }else{
-                sortObject.reps = queryParameters.reps === 'desc' ? 1 : -1
+                sortObject.reps = queryParameters.sortByReps === 'desc' ? -1 : 1
             }
         }
 
@@ -88,30 +94,29 @@ async function getController(req, res, next){
             if(queryParameters.sortByLoad !== 'desc' && queryParameters.sortByLoad !== 'asce'){
                 throw new Error("Wrong query sortByLoad parameter")
             }else{
-                sortObject.load = queryParameters.load === 'desc' ? 1 : -1
+                sortObject.load = queryParameters.sortByLoad === 'desc' ? -1 : 1
             }
         }
 
-        if (queryParameters.selectedFields) {
-            const allowedFieldsRegex = /^(title|reps|load|createdAt|updatedAt|_id|__v)(\s*,\s*(title|reps|load|createdAt|updatedAt|_id|__v))*$/;
-            const sanitizedFields = queryParameters.selectedFields.replace(
-              new RegExp(allowedFieldsRegex.source, 'g'),
-              ''
-            );
-          
-            if (!sanitizedFields) {
-              throw new Error("Wrong selected fields parameters");
-            } else {
-              const parsedFields = sanitizedFields.replace(/%20/g, ' ');
-              selectedFields = parsedFields;
+        if(queryParameters.selectedFields){
+            const regex = /_id|__v|title|load|reps|createdAt|updatedAt/g
+            const querySelectedFields = queryParameters.selectedFields
+
+            const acceptedQuerySelectedFields = `${querySelectedFields.match(regex)}`
+
+            if(!acceptedQuerySelectedFields){
+                throw new Error("Invalid query selectedFields parameter")
             }
+
+            const sanitizedQuerySelectedFields = acceptedQuerySelectedFields.replace(/,/g, ' ')
+            selectedFields = sanitizedQuerySelectedFields
         }
           
         const foundWorkouts = await WorkoutModel
             .find(filterObject)
             .select(selectedFields)
             .sort(sortObject)
-            .limit(limit)
+            .limit(limitNumber)
         res.status(200).json(foundWorkouts)
         eventLogger(`Finding ${foundWorkouts.length} of workouts from collection successful`, foundWorkouts, "databaseLogs.txt")
     }catch(error){
