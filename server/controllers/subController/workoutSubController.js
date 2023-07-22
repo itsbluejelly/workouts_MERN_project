@@ -32,24 +32,55 @@ async function getController(req, res, next){
             .findById(req.params.id)
             .select(selectedFields)
         res.status(200).json(foundWorkout)
-        eventLogger(`Workout with an id of ${foundWorkout._id} from collection successful`, foundWorkout, "databaseLogs.txt")
+        eventLogger(`Workout with an id of ${foundWorkout._id} found from collection successfully`, foundWorkout, "databaseLogs.txt")
     }catch(error){
         res.status(404).json({Error: {[error.name]: error.message}})
-        eventLogger(error.name, error.message, "errorLogs,txt")
+        eventLogger(error.name, error.message, "errorLogs.txt")
     }
 
     next()
 }
 
 //DEFINING A DELETECONTROLLER FUNCTION THAT HANDLES DELETE REQUESTS
-function deleteController(req, res, next){
-    res.send("Hello")
+async function deleteController(req, res, next){
+    const idParameter = req.params.id
+
+    try{
+        if(!mongoose.Types.ObjectId.isValid(idParameter)){
+            throw new Error("The id given is invalid")
+        }
+        
+        const deletedWorkout = await WorkoutModel.findByIdAndDelete(idParameter)
+        res.status(200).send(`Workout with id ${deletedWorkout._id} successfully deleted`)
+        eventLogger("Deletion of workout from collection successful", `Workout with id ${deletedWorkout._id} successfully deleted`, "databaseLogs.txt")
+    }catch(error){
+        res.status(404).json({ Error: {[error.name]: error.message }})
+        eventLogger(error.name, error.message, "errorLogs.txt")
+    }
+
     next()
 }
 
 //DEFINING A PATCHCONTROLLER FUNCTION THAT HANDLES PATCH REQUESTS
-function patchController(req, res, next){
-    res.send("Hello")
+async function patchController(req, res, next){
+    const idParameter = req.params.id
+
+    try{
+        if(!mongoose.Types.ObjectId.isValid){
+            throw new Error("The id given is invalid")
+        }
+
+        const updatedWorkout = await WorkoutModel.findByIdAndUpdate(
+            idParameter, 
+            req.body.update ? req.body.update : null,
+            {new: true})
+        res.status(200).json(updatedWorkout)
+        eventLogger(`Workout with id ${updatedWorkout._id} successfully updated`, updatedWorkout, "databaseLogs.txt")
+    }catch(error){
+        res.status(404).json({ Error: {[error.name]: error.message }})
+        eventLogger(error.name, error.message, "errorLogs.txt")
+    }
+
     next()
 }
 
