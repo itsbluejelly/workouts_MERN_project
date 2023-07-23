@@ -120,7 +120,7 @@ async function getController(req, res, next){
         res.status(200).json(foundWorkouts)
         eventLogger(`Finding ${foundWorkouts.length} of workouts from collection successful`, foundWorkouts, "databaseLogs.txt")
     }catch(error){
-        res.status(404).json({ Error: { [error.name]: error.message } })
+        res.status(404).json({ error: error.message })
         eventLogger(error.name, error.message, "errorLogs.txt")
     }
     
@@ -145,10 +145,10 @@ async function postController(req, res, next){
 async function deleteController(req, res, next){
     try{
         const deletedWorkouts = await WorkoutModel.deleteMany(req.body.actions ? req.body.actions.find : null)
-        res.status(200).send(`${deletedWorkouts.deletedCount} workouts deleted successfully`)
+        res.status(200).json({"success": `${deletedWorkouts.deletedCount} workouts deleted successfully`})
         eventLogger("Deletion of workouts from collection successfull", `${deletedWorkouts.deletedCount} workouts deleted`, "databaseLogs.txt")
     }catch(error){
-        res.status(404).json({ Error: { [error.name]: error.message } })
+        res.status(404).json({ error: error.message })
         eventLogger(error.name, error.message, "errorLogs.txt")
     }
 

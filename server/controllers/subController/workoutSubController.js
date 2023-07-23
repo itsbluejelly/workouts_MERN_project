@@ -51,10 +51,10 @@ async function deleteController(req, res, next){
         }
         
         const deletedWorkout = await WorkoutModel.findByIdAndDelete(idParameter)
-        res.status(200).send(`Workout with id ${deletedWorkout._id} successfully deleted`)
+        res.status(200).json({"success": `Workout with id ${deletedWorkout._id} successfully deleted`})
         eventLogger("Deletion of workout from collection successful", `Workout with id ${deletedWorkout._id} successfully deleted`, "databaseLogs.txt")
     }catch(error){
-        res.status(404).json({ Error: {[error.name]: error.message }})
+        res.status(404).json({error: error.message})
         eventLogger(error.name, error.message, "errorLogs.txt")
     }
 
