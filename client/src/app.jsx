@@ -1,6 +1,6 @@
+// IMPORTING NECESSARY COMPONENTS AND MODULES
 import HomePage from "./pages/HomePage"
 import RootLayout from "./layouts/RootLayout"
-
 import {
     RouterProvider, 
     Route, 
@@ -8,6 +8,7 @@ import {
     createRoutesFromElements,
 } from 'react-router-dom'
 
+// A VARIABLE DEFINING ALL THE DIFFERENT ROUTES AND THEIR RESPECTIVE PAGES
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
     )
 )
 
+// RETURNING A COMPONENT WITH ROUTED PAGES
 export default function App(){
     return(
         <div className="app">

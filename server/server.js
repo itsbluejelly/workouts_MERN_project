@@ -1,8 +1,8 @@
 // IMPORTING NECESSARY LIBRARIES AND MIDDLEWARES
 const express = require('express')
 const dotenv = require('dotenv')
-const cors = require('cors')
 const mongoose = require('mongoose')
+const cors = require('cors')
 const eventLogger = require('./middleware/eventLogger')
 const rootRouter = require('./routers/rootRouter')
 const workoutsRouter = require('./routers/workoutsRouter')
