@@ -5,7 +5,7 @@ export default function Workout(props){
             <p><strong>Load (kg): </strong>{props.workout.load}</p>
             <p><strong>Reps (kg): </strong>{props.workout.reps}</p>
             <p>{props.workout.createdAt}</p>
-            <span onClick={props.handleClick}>Delete</span>
+            <span onClick={props.handleClick}>&#128465;</span>
         </div>
     )
 }
