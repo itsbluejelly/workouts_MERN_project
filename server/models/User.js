@@ -6,20 +6,20 @@ const Schema = mongoose.Schema
 
 // DEFINING A USER SCHEMA
 const UserSchema = new Schema({
-    "email":{
+    email:{
         type: String,
         required: [true, "You must have a correct email"],
         unique: [true, "You email must be unique"] 
     },
 
-    "password": {
+    password: {
         type: String,
         required: [true, "You must have a password"],
     },
 
-    "username": {
+    username: {
         type: String,
-        required: [true, "You must provide a username"],
+        required: [true, "You must provide a username"]
     }
 })
 
