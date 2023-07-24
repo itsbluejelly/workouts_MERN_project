@@ -6,6 +6,7 @@ const cors = require('cors')
 const eventLogger = require('./middleware/eventLogger')
 const rootRouter = require('./routers/rootRouter')
 const workoutsRouter = require('./routers/workoutsRouter')
+const userRouter = require('./routers/userRouter.js')
 const connectDB = require('./config/connectDB')
 
 // INITIATING EXPRESS APP WITH OTHER LIBRARIES
@@ -20,6 +21,7 @@ app.use(express.json())
 // ROUTE MIDDLEWARES
 app.use("/", rootRouter)
 app.use("/workouts", workoutsRouter)
+app.use("/user", userRouter)
 
 // INITIALIZING SERVER
 const port = process.env.PORT_NUMBER || 4000

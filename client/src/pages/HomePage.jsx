@@ -91,7 +91,7 @@ export default function HomePage() {
             if(!response.ok){
                 throw new Error(data.error)
             }else{
-                setSuccess("Workout deleted successfully")
+                setSuccess(data.success)
                 setReload(prevState => !prevState)
             }
         }catch(error){
