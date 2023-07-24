@@ -1,5 +1,6 @@
 // IMPORT NECESSARY MODULES AND MIDDLEWARE
 const eventLogger = require('../middleware/eventLogger')
+const UserModel = require('../models/User')
 
 // A LOGINPOSTCONTROLLER TO DEAL WITH POST REQUESTS
 function loginPostController(req, res, next){
