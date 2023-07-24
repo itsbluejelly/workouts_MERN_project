@@ -31,10 +31,10 @@ async function getController(req, res, next){
         const foundWorkout = await WorkoutModel
             .findById(req.params.id)
             .select(selectedFields)
-        res.status(200).json(foundWorkout)
+        res.status(200).json({success: foundWorkout})
         eventLogger(`Workout with an id of ${foundWorkout._id} found from collection successfully`, foundWorkout, "databaseLogs.txt")
     }catch(error){
-        res.status(404).json({Error: {[error.name]: error.message}})
+        res.status(404).json({ error : error.message })
         eventLogger(error.name, error.message, "errorLogs.txt")
     }
 
@@ -74,10 +74,10 @@ async function patchController(req, res, next){
             idParameter, 
             req.body.update ? req.body.update : null,
             {new: true})
-        res.status(200).json(updatedWorkout)
+        res.status(200).json({success: updatedWorkout})
         eventLogger(`Workout with id ${updatedWorkout._id} successfully updated`, updatedWorkout, "databaseLogs.txt")
     }catch(error){
-        res.status(404).json({ Error: {[error.name]: error.message }})
+        res.status(404).json({ error : error.message })
         eventLogger(error.name, error.message, "errorLogs.txt")
     }
 
