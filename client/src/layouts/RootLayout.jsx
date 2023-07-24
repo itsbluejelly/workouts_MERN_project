@@ -11,7 +11,7 @@ export default function RootLayout(){
                 </nav>
             </header>
 
-            <main>
+            <main  className='pages'>
                 <Outlet/>
             </main>
         </div>

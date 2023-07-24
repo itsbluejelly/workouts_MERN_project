@@ -31,7 +31,13 @@ export default function WorkoutForm(props){
             />
 
             <button>Add Workout</button>
-            {props.error && <div className="error">{props.error}</div>}
+            {
+                props.error 
+                ? 
+                    <div className="error">{props.error}</div> 
+                : 
+                    <div className="success">{props.success}</div>
+            }
         </form>
     )
 }

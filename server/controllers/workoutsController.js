@@ -117,7 +117,7 @@ async function getController(req, res, next){
             .select(selectedFields)
             .sort(sortObject)
             .limit(limitNumber)
-        res.status(200).json(foundWorkouts)
+        res.status(200).json({ success: foundWorkouts })
         eventLogger(`Finding ${foundWorkouts.length} of workouts from collection successful`, foundWorkouts, "databaseLogs.txt")
     }catch(error){
         res.status(404).json({ error: error.message })

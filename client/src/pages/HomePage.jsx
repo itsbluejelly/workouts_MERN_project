@@ -6,8 +6,10 @@ import WorkoutForm from "../components/WorkoutForm"
 export default function HomePage() {
     // A VARIABLE TO SET THE FETCHED WORKOUTS DATA
     const [fetchedWorkouts, setFetchedWorkouts] = React.useState([])
-    // A VARIABLE TO SET THE POPUP MESSAGE BELOW
+    // A VARIABLE TO SET THE POPUP ERROR MESSAGE BELOW
     const [error, setError] = React.useState('')
+    // A VARIABLE TO SET THE POPUP SUCCESS MESSAGE BELOW
+    const [success, setSuccess] = React.useState('')
     // A VARIABLE TO RELOAD THE PAGE
     const [reload, setReload] = React.useState(false)
 
@@ -30,16 +32,18 @@ export default function HomePage() {
     async function getWorkouts(){
         try{
             const response = await fetch('http://localhost:4000/workouts?sortByLatest=true')
-            const obtainedWorkouts = await response.json()
+            const data = await response.json()
             
             if(response.ok){
-                setFetchedWorkouts(obtainedWorkouts)
+                setFetchedWorkouts(data.success)
             }else{
-                throw new Error(obtainedWorkouts.error)
+                throw new Error(data.error)
             }
 
             setError('')
+            setSuccess('Workouts fetched successfully')
         }catch(error){
+            setSuccess('')
             setError(error.message)
         }
     }
@@ -70,7 +74,7 @@ export default function HomePage() {
                     reps: 0
                 }))
                 
-                setError(data.success)
+                setSuccess(data.success)
                 setReload(prevState => !prevState)
             }
         }catch(error){
@@ -87,7 +91,7 @@ export default function HomePage() {
             if(!response.ok){
                 throw new Error(data.error)
             }else{
-                setError(data.success)
+                setSuccess("Workout deleted successfully")
                 setReload(prevState => !prevState)
             }
         }catch(error){
@@ -114,11 +118,14 @@ export default function HomePage() {
     }
     
     return (
-        <div className="pages">
-            {generateListOfWorkoutComponents()}
+        <div className="homePage">
+            <div>
+                {generateListOfWorkoutComponents()}
+            </div>
             
             <WorkoutForm
                 error={error}
+                success={success}
                 formData={formData}
                 handleChange={(e) => handleChange(e)}
                 handleSubmit={(e) => handleSubmit(e)}
