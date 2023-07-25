@@ -131,7 +131,10 @@ async function getController(req, res, next){
 async function postController(req, res, next){
     try{
         const createdWorkout = await WorkoutModel.create(req.body)
-        res.status(201).json({"success": "Workout created successfully"})
+        res.status(201).json({
+            success: "Workout created successfully",
+            data: createdWorkout
+        })
         eventLogger("A new workout successfully added to database", createdWorkout, "databaseLogs.txt")
     }catch(error){
         res.status(400).json({error: error.message})
