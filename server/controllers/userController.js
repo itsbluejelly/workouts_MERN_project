@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const validator = require('validator')
 const eventLogger = require('../middleware/eventLogger')
 const UserModel = require('../models/User')
-const { default: isEmail } = require('validator/lib/isEmail')
+const JWTGENERATOR = require('../middleware/JWTGenerator')
 
 // A LOGINPOSTCONTROLLER TO DEAL WITH POST REQUESTS
 function loginPostController(req, res, next){
@@ -35,7 +35,11 @@ async function signupPostController(req, res, next){
                 const saltRounds = await bcrypt.genSalt(12)
                 const hashedPassword = await bcrypt.hash(password, saltRounds)
                 const createdUser = await UserModel.create({username, email, password: hashedPassword})
-                res.status(201).json({success: `${createdUser.username}'s account created successfully`})
+                const token = JWTGENERATOR({id: createdUser._id}, process.env.SECRET_KEY, '24h')
+                res.status(201).json({
+                    success: `${createdUser.username}'s account created successfully`,
+                    token: token
+                })
                 eventLogger(`User with id ${createdUser._id} successfully created`, createdUser, "UserLogs.txt")
             }   
         }
